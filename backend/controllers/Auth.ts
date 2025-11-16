@@ -129,7 +129,7 @@ export const login = async (req: Request, res: Response) => {
 
     // Set cookie options
     const options = {
-      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), //3 days
       httpOnly: true,
     };
 
@@ -156,7 +156,7 @@ export const login = async (req: Request, res: Response) => {
 export const sendotp = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { email } = req.body;
-
+    console.log("Request Body:", req.body);
     // Check if user is already registered
     const checkUserPresent = await User.findOne({ email });
 

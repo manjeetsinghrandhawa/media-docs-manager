@@ -55,6 +55,8 @@ export function sendOtp(email: string, navigate: NavigateFunction) {
     dispatch(setLoading(true));
 
     try {
+
+      console.log("Sending OTP to email:", email);
       const response = await apiConnector("POST", SENDOTP_API, {
         email,
         checkUserPresent: true,
