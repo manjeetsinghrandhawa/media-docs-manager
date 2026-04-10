@@ -30,22 +30,23 @@ const VerifyEmail: React.FC = () => {
   };
 
   return (
-    <div className="grid min-h-[calc(100vh-3.5rem)] place-items-center">
+    <div className="grid min-h-[calc(100vh-4rem)] place-items-center px-4 py-8">
       {loading ? (
         <div className="spinner"></div>
       ) : (
-        <div className="max-w-[500px] p-4 lg:p-8">
-          <h1 className="text-[1.875rem] font-semibold leading-[2.375rem] text-richblack-5">
+        <div className="surface-card w-full max-w-[560px] p-6 lg:p-8">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">Verification</p>
+          <h1 className="mt-2 text-3xl font-semibold leading-tight text-white">
             Verify Email
           </h1>
-          <p className="my-4 text-[1.125rem] leading-[1.625rem] text-richblack-100">
+          <p className="my-4 text-base leading-7 text-slate-200">
             A verification code has been sent to your email. Enter the code below.
           </p>
           <form onSubmit={handleVerification}>
             <div className="mb-6">
               <label className="w-full">
-                <p className="mb-1 text-[0.875rem] leading-[1.375rem] text-richblack-5">
-                  Verification Code <sup className="text-pink-200">*</sup>
+                <p className="mb-1 text-sm leading-[1.375rem] text-slate-100">
+                  Verification Code <sup className="text-rose-300">*</sup>
                 </p>
                 <input
                   required
@@ -54,16 +55,13 @@ const VerifyEmail: React.FC = () => {
                   value={otp}
                   onChange={(e) => setOtp(e.target.value)}
                   placeholder="Enter verification code"
-                  style={{
-                    boxShadow: "inset 0px -1px 0px rgba(255, 255, 255, 0.18)",
-                  }}
-                  className="w-full rounded-[0.5rem] bg-richblack-800 p-[12px] text-richblack-5"
+                  className="ui-input"
                 />
               </label>
             </div>
             <button
               type="submit"
-              className="w-full rounded-[8px] bg-yellow-50 py-[12px] px-[12px] font-medium text-richblack-900"
+              className="btn-primary w-full py-3"
             >
               Verify Email
             </button>

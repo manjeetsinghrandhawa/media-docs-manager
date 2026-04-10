@@ -1,8 +1,8 @@
 import { toast } from "react-hot-toast";
 import { apiConnector } from "../apiconnector";
-import { endpoints } from "../api";
+import { endpoints, BASE_URL, BACKEND_URL } from "../api";
 
-const { UPLOAD_FILE_API, GET_FILES_API, DELETE_FILE_API, DOWNLOAD_FILE_API } = endpoints;
+const { UPLOAD_FILE_API, GET_FILES_API } = endpoints;
 
 export interface FileData {
   id: string;
@@ -90,7 +90,7 @@ export function getUserFiles() {
       // Ensure we have the correct API URL - fallback if needed
       let baseApiUrl = GET_FILES_API;
       if (!baseApiUrl.includes('/allfiles')) {
-        baseApiUrl = 'http://localhost:8000/api/v1/files/allfiles';
+        baseApiUrl = `${BASE_URL}/files/allfiles`;
         console.log("⚠️ Using fallback API URL:", baseApiUrl);
       }
       
@@ -132,7 +132,7 @@ export function getUserFiles() {
           // Re-get user data for fallback
           const userString = localStorage.getItem("user");
           const userData = userString ? JSON.parse(userString) : null;
-          const fallbackUrl = `http://localhost:8000/api/v1/files/allfiles${userData?.email ? `?email=${encodeURIComponent(userData.email)}` : ''}`;
+          const fallbackUrl = `${BASE_URL}/files/allfiles${userData?.email ? `?email=${encodeURIComponent(userData.email)}` : ''}`;
           console.log("🔄 Fallback URL:", fallbackUrl);
           
           const fallbackResponse = await apiConnector("GET", fallbackUrl, null, undefined, undefined);
@@ -157,7 +157,7 @@ export function deleteFile(fileId: string) {
     const toastId = toast.loading("Deleting file...");
 
     try {
-      const response = await apiConnector("DELETE", `http://localhost:8000/api/v1/files/delete/${fileId}`, null, undefined, undefined);
+      const response = await apiConnector("DELETE", `${BASE_URL}/files/delete/${fileId}`, null, undefined, undefined);
 
       console.log("DELETE FILE API RESPONSE............", response);
 
@@ -192,7 +192,7 @@ export function downloadFile(fileId: string, filename: string) {
       
       if (user?.email) {
         // Get all files to find the correct file URL
-        const filesResponse = await fetch(`http://localhost:8000/api/v1/files/allfiles?email=${encodeURIComponent(user.email)}`);
+        const filesResponse = await fetch(`${BASE_URL}/files/allfiles?email=${encodeURIComponent(user.email)}`);
         const filesData = await filesResponse.json();
         
         if (filesData.success) {
@@ -243,7 +243,7 @@ export function downloadFile(fileId: string, filename: string) {
       }
       
       // Final fallback: try original static serving
-      const fallbackUrl = `http://localhost:8000/files/${filename}`;
+      const fallbackUrl = `${BACKEND_URL}/files/${filename}`;
       console.log("🔽 Final fallback download URL:", fallbackUrl);
       
       const link = document.createElement('a');
@@ -269,7 +269,7 @@ export function downloadFile(fileId: string, filename: string) {
 export const getFileContent = async (fileName: string) => {
   console.log("📄 Getting file content for:", fileName);
   try {
-    const response = await apiConnector("GET", `http://localhost:8000/api/v1/files/content/${fileName}`, null, undefined, undefined);
+    const response = await apiConnector("GET", `${BASE_URL}/files/content/${fileName}`, null, undefined, undefined);
     console.log("✅ File content retrieved:", response.data);
     return response.data;
   } catch (error: any) {
@@ -280,12 +280,12 @@ export const getFileContent = async (fileName: string) => {
 
 // Serve file directly from local filesystem  
 export const getFileServeUrl = (fileName: string): string => {
-  return `http://localhost:8000/api/v1/files/serve/${fileName}`;
+  return `${BASE_URL}/files/serve/${fileName}`;
 };
 
 // Download file with proper headers from server
 export const getDownloadUrl = (fileName: string): string => {
-  return `http://localhost:8000/api/v1/files/download/${fileName}`;
+  return `${BASE_URL}/files/download/${fileName}`;
 };
 
 // Extract filename from file URL

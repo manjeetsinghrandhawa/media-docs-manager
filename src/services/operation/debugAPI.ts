@@ -1,11 +1,12 @@
 // Debug API functions to test backend connectivity
+import { BASE_URL } from "../api";
 
 export const testBackendConnection = async () => {
   console.log("🔧 Testing backend connection...");
   
   try {
     // Test basic backend connectivity
-    const response = await fetch('http://localhost:8000/api/v1/files/test');
+    const response = await fetch(`${BASE_URL}/files/test`);
     const data = await response.json();
     console.log("✅ Backend test successful:", data);
     return data;
@@ -20,8 +21,8 @@ export const testAllFilesEndpoint = async (email?: string) => {
   
   try {
     const url = email 
-      ? `http://localhost:8000/api/v1/files/allfiles?email=${encodeURIComponent(email)}`
-      : 'http://localhost:8000/api/v1/files/allfiles';
+      ? `${BASE_URL}/files/allfiles?email=${encodeURIComponent(email)}`
+      : `${BASE_URL}/files/allfiles`;
     
     console.log("🌐 Testing URL:", url);
     

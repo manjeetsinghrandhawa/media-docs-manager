@@ -72,8 +72,8 @@ const SignupForm: React.FC = () => {
     <form onSubmit={handleOnSubmit} className="flex w-full flex-col gap-y-4">
       <div className="flex flex-col sm:flex-row gap-4">
         <label className="w-full">
-          <p className="mb-1 text-[0.875rem] text-richblack-5">
-            First Name <sup className="text-pink-200">*</sup>
+          <p className="mb-1 text-sm text-slate-100">
+            First Name <sup className="text-rose-300">*</sup>
           </p>
           <input
             required
@@ -82,13 +82,13 @@ const SignupForm: React.FC = () => {
             value={firstName}
             onChange={handleOnChange}
             placeholder="Enter first name"
-            className="w-full rounded bg-richblack-800 p-3 text-richblack-5"
+            className="ui-input"
           />
         </label>
 
         <label className="w-full">
-          <p className="mb-1 text-[0.875rem] text-richblack-5">
-            Last Name <sup className="text-pink-200">*</sup>
+          <p className="mb-1 text-sm text-slate-100">
+            Last Name <sup className="text-rose-300">*</sup>
           </p>
           <input
             required
@@ -97,14 +97,14 @@ const SignupForm: React.FC = () => {
             value={lastName}
             onChange={handleOnChange}
             placeholder="Enter last name"
-            className="w-full rounded bg-richblack-800 p-3 text-richblack-5"
+            className="ui-input"
           />
         </label>
       </div>
 
       <label className="w-full">
-        <p className="mb-1 text-[0.875rem] text-richblack-5">
-          Email Address <sup className="text-pink-200">*</sup>
+        <p className="mb-1 text-sm text-slate-100">
+          Email Address <sup className="text-rose-300">*</sup>
         </p>
         <input
           required
@@ -113,13 +113,13 @@ const SignupForm: React.FC = () => {
           value={email}
           onChange={handleOnChange}
           placeholder="Enter email address"
-          className="w-full rounded bg-richblack-800 p-3 text-richblack-5"
+          className="ui-input"
         />
       </label>
 
       <label className="relative w-full">
-        <p className="mb-1 text-[0.875rem] text-richblack-5">
-          Password <sup className="text-pink-200">*</sup>
+        <p className="mb-1 text-sm text-slate-100">
+          Password <sup className="text-rose-300">*</sup>
         </p>
         <input
           required
@@ -128,7 +128,7 @@ const SignupForm: React.FC = () => {
           value={password}
           onChange={handleOnChange}
           placeholder="Enter password"
-          className="w-full rounded bg-richblack-800 p-3 pr-10 text-richblack-5"
+          className="ui-input pr-10"
         />
         <span
           onClick={() => setShowPassword((prev) => !prev)}
@@ -143,8 +143,8 @@ const SignupForm: React.FC = () => {
       </label>
 
       <label className="relative w-full">
-        <p className="mb-1 text-[0.875rem] text-richblack-5">
-          Confirm Password <sup className="text-pink-200">*</sup>
+        <p className="mb-1 text-sm text-slate-100">
+          Confirm Password <sup className="text-rose-300">*</sup>
         </p>
         <input
           required
@@ -153,7 +153,7 @@ const SignupForm: React.FC = () => {
           value={confirmPassword}
           onChange={handleOnChange}
           placeholder="Confirm password"
-          className="w-full rounded bg-richblack-800 p-3 pr-10 text-richblack-5"
+          className="ui-input pr-10"
         />
         <span
           onClick={() => setShowConfirmPassword((prev) => !prev)}
@@ -169,7 +169,7 @@ const SignupForm: React.FC = () => {
 
       <button
         type="submit"
-        className="mt-6 rounded bg-yellow-50 py-3 px-4 font-medium text-richblack-900 hover:bg-yellow-100 transition duration-300"
+        className="btn-primary mt-6 py-3 px-4"
       >
         Create Account
       </button>

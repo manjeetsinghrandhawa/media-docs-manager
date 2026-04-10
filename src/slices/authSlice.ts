@@ -7,11 +7,27 @@ interface AuthState {
   token: string | null;
 }
 
+const getStoredToken = (): string | null => {
+  const storedToken = localStorage.getItem("token");
+
+  if (!storedToken) {
+    return null;
+  }
+
+  // Supports both legacy JSON-stringified tokens and raw JWT strings.
+  try {
+    const parsed = JSON.parse(storedToken);
+    return typeof parsed === "string" ? parsed : storedToken;
+  } catch {
+    return storedToken;
+  }
+};
+
 // Define the initial state
 const initialState: AuthState = {
   signupData: null,
   loading: false,
-  token: localStorage.getItem("token") ? JSON.parse(localStorage.getItem("token") as string) : null,
+  token: getStoredToken(),
 };
 
 const authSlice = createSlice({

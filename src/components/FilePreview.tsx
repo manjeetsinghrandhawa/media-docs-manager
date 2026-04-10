@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { X, Download, ExternalLink, FileText } from 'lucide-react';
 import { FileData, getFileContent, getFileServeUrl, getDownloadUrl, extractFileNameFromUrl } from '../services/operation/fileAPI';
+import { BACKEND_URL } from '../services/api';
 
 interface FilePreviewProps {
   file: FileData | null;
@@ -127,7 +128,6 @@ const TextFilePreview: React.FC<{ fileUrl: string; file: FileData }> = ({ fileUr
 
 // PDF Preview Component
 const PDFPreview: React.FC<{ fileUrl: string; file: FileData }> = ({ fileUrl, file }) => {
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>('');
 
   // Get the proper file serving URL
@@ -155,7 +155,6 @@ const PDFPreview: React.FC<{ fileUrl: string; file: FileData }> = ({ fileUrl, fi
               src={serveUrl}
               className="w-full h-96"
               title={file.name}
-              onLoad={() => setLoading(false)}
               onError={() => setError('PDF iframe failed to load')}
             />
           </div>
@@ -750,7 +749,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
   const getFileUrl = (url: string) => {
     // Ensure the URL is properly formatted for the backend
     if (url.startsWith('/files/')) {
-      return `http://localhost:8000${url}`;
+      return `${BACKEND_URL}${url}`;
     }
     return url;
   };
@@ -834,15 +833,15 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 p-2 sm:p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl max-h-[95vh] sm:max-h-[90vh] w-full overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-2 backdrop-blur-[2px] sm:p-4">
+      <div className="surface-card max-h-[95vh] w-full max-w-4xl overflow-hidden sm:max-h-[90vh]">
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700 gap-3 sm:gap-0">
+        <div className="flex flex-col gap-3 border-b border-slate-300/20 p-3 sm:flex-row sm:items-center sm:justify-between sm:gap-0 sm:p-4">
           <div className="flex-1 min-w-0">
-            <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white truncate">
+            <h3 className="truncate text-base font-medium text-white sm:text-lg">
               {file.name}
             </h3>
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 mt-1 text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+            <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-slate-300 sm:gap-4 sm:text-sm">
               <span>{file.fileType.toUpperCase()}</span>
               <span>{file.sizeFormatted}</span>
               <span className="hidden sm:inline">{file.uploadDateFormatted}</span>
@@ -866,7 +865,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
                 link.click();
                 document.body.removeChild(link);
               }}
-              className="flex items-center gap-1 sm:gap-0 px-3 py-1 sm:p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition duration-200 text-sm sm:text-base"
+              className="flex items-center gap-1 rounded-lg px-3 py-1 text-sm text-cyan-200 transition duration-200 hover:bg-cyan-500/15 sm:gap-0 sm:p-2 sm:text-base"
               title="Download"
             >
               <Download size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -875,7 +874,7 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
             
             <button
               onClick={onClose}
-              className="flex items-center gap-1 sm:gap-0 px-3 py-1 sm:p-2 text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg transition duration-200 text-sm sm:text-base"
+              className="flex items-center gap-1 rounded-lg px-3 py-1 text-sm text-slate-200 transition duration-200 hover:bg-slate-400/10 sm:gap-0 sm:p-2 sm:text-base"
               title="Close"
             >
               <X size={16} className="sm:w-[18px] sm:h-[18px]" />
@@ -890,13 +889,13 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
           
           {/* File Details */}
           {(file.description || file.tags.length > 0) && (
-            <div className="mt-4 sm:mt-6 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-4 border-t border-slate-300/20 pt-3 sm:mt-6 sm:pt-4">
               {file.description && (
                 <div className="mb-3">
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-1">
+                  <h4 className="mb-1 text-sm font-medium text-white">
                     Description:
                   </h4>
-                  <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                  <p className="text-xs text-slate-300 sm:text-sm">
                     {file.description}
                   </p>
                 </div>
@@ -904,14 +903,14 @@ const FilePreview: React.FC<FilePreviewProps> = ({ file, isOpen, onClose, onDown
               
               {file.tags.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+                  <h4 className="mb-2 text-sm font-medium text-white">
                     Tags:
                   </h4>
                   <div className="flex flex-wrap gap-1 sm:gap-2">
                     {file.tags.map((tag, index) => (
                       <span
                         key={index}
-                        className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs rounded-full"
+                        className="rounded-full bg-cyan-400/20 px-2 py-1 text-xs text-cyan-100"
                       >
                         {tag}
                       </span>

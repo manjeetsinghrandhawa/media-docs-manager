@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import fileUpload from "express-fileupload";
 import path from "path";
 import userRoutes from "./routes/User";
+import UploadRoutes from "./routes/FileUpload";
+import { connect as connectDatabase } from "./config/database";
+import { cloudinaryConnect } from "./config/cloudinary";
 import cors from "cors";
 
 
@@ -33,16 +36,8 @@ app.use(
   })
 );
 
-// Database connection
-import { connect as connectDatabase } from "./config/database";
-
-
 // Cloudinary connection
-import { cloudinaryConnect } from "./config/cloudinary";
 cloudinaryConnect();
-
-// API routes
-import UploadRoutes from "./routes/FileUpload";
 
 app.use("/api/v1/files", UploadRoutes);
 app.use("/api/v1/auth", userRoutes);

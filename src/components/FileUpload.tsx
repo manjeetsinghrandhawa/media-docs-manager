@@ -82,13 +82,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
     if (selectedFiles.length === 0) return;
 
     setUploadProgress(0);
-    let successCount = 0;
 
     try {
       for (let i = 0; i < selectedFiles.length; i++) {
         const file = selectedFiles[i];
         await dispatch(uploadFile(file));
-        successCount++;
         setUploadProgress(((i + 1) / selectedFiles.length) * 100);
       }
 
@@ -110,7 +108,6 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
   };
 
   const getFileIcon = (fileName: string) => {
-    const extension = fileName.split('.').pop()?.toLowerCase();
     return <File size={20} className="text-blue-500" />;
   };
 
@@ -118,26 +115,26 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
     <div className="w-full max-w-2xl mx-auto">
       {/* Drop Zone */}
       <div
-        className={`border-2 border-dashed rounded-lg p-4 sm:p-8 text-center transition-colors duration-200 ${
+        className={`rounded-2xl border-2 border-dashed p-4 text-center transition-colors duration-200 sm:p-8 ${
           isDragOver
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-            : 'border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800'
+            ? 'border-cyan-300 bg-cyan-400/10'
+            : 'border-slate-300/30 bg-slate-900/35'
         }`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <Upload size={48} className="mx-auto mb-4 text-gray-400 w-8 h-8 sm:w-12 sm:h-12" />
-        <h3 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-2">
+        <Upload size={48} className="mx-auto mb-4 h-8 w-8 text-cyan-200 sm:h-12 sm:w-12" />
+        <h3 className="mb-2 text-base font-medium text-white sm:text-lg">
           Drop files here or click to browse
         </h3>
-        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-4 px-2">
+        <p className="mb-4 px-2 text-xs text-slate-300 sm:text-sm">
           Supports: {allowedTypes.slice(0, 4).join(', ')}{allowedTypes.length > 4 ? '...' : ''} (Max 50MB each)
         </p>
         
         <button
           onClick={() => fileInputRef.current?.click()}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-6 py-2 rounded-lg transition duration-300 text-sm sm:text-base"
+          className="btn-primary px-4 py-2 text-sm sm:px-6 sm:text-base"
         >
           Choose Files
         </button>
@@ -155,7 +152,7 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
       {/* Selected Files */}
       {selectedFiles.length > 0 && (
         <div className="mt-4 sm:mt-6">
-          <h4 className="text-base sm:text-lg font-medium text-gray-900 dark:text-white mb-3 sm:mb-4">
+          <h4 className="mb-3 text-base font-medium text-white sm:mb-4 sm:text-lg">
             Selected Files ({selectedFiles.length})
           </h4>
           
@@ -163,15 +160,15 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
             {selectedFiles.map((file, index) => (
               <div
                 key={index}
-                className="flex items-center justify-between p-2 sm:p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600"
+                className="flex items-center justify-between rounded-lg border border-slate-300/20 bg-slate-900/50 p-2 sm:p-3"
               >
                 <div className="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
                   {getFileIcon(file.name)}
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white truncate">
+                    <p className="truncate text-xs font-medium text-white sm:text-sm">
                       {file.name}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-slate-300">
                       {formatFileSize(file.size)}
                     </p>
                   </div>
@@ -194,8 +191,8 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
               disabled={uploadProgress !== null}
               className={`px-4 sm:px-6 py-2 rounded-lg text-white transition duration-300 text-sm sm:text-base w-full sm:w-auto ${
                 uploadProgress !== null
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-green-600 hover:bg-green-700'
+                  ? 'cursor-not-allowed bg-slate-500'
+                  : 'btn-primary'
               }`}
             >
               {uploadProgress !== null ? 'Uploading...' : `Upload ${selectedFiles.length} File(s)`}
@@ -207,11 +204,11 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
             <div className="mt-4">
               <div className="bg-gray-200 dark:bg-gray-700 rounded-full h-2">
                 <div
-                  className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                  className="h-2 rounded-full bg-cyan-400 transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <p className="mt-1 text-sm text-slate-200">
                 {Math.round(uploadProgress)}% complete
               </p>
             </div>
@@ -220,14 +217,14 @@ const FileUpload: React.FC<FileUploadProps> = ({ onUploadSuccess }) => {
       )}
 
       {/* File Type Info */}
-      <div className="mt-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+      <div className="surface-soft mt-6 p-4">
         <div className="flex items-start space-x-2">
-          <AlertCircle size={20} className="text-blue-600 dark:text-blue-400 mt-0.5" />
+          <AlertCircle size={20} className="mt-0.5 text-cyan-200" />
           <div>
-            <h5 className="text-sm font-medium text-blue-900 dark:text-blue-100">
+            <h5 className="text-sm font-medium text-cyan-100">
               Supported File Types
             </h5>
-            <div className="text-sm text-blue-700 dark:text-blue-300 mt-1">
+            <div className="mt-1 text-sm text-slate-200">
               <p><strong>Text:</strong> .txt, .srt, .docx, .pdf</p>
               <p><strong>Audio:</strong> .mp3, .wav</p>
               <p><strong>Video:</strong> .mp4, .webm</p>

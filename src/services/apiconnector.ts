@@ -2,12 +2,27 @@ import axios from "axios"
 
 export const axiosInstance = axios.create({});
 
+const getAuthToken = (): string | null => {
+    const storedToken = localStorage.getItem("token");
+
+    if (!storedToken) {
+        return null;
+    }
+
+    try {
+        const parsed = JSON.parse(storedToken);
+        return typeof parsed === "string" ? parsed : storedToken;
+    } catch {
+        return storedToken;
+    }
+};
+
 // Add a request interceptor to include JWT token
 axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem("token");
+        const token = getAuthToken();
         if (token && config.headers) {
-            config.headers.Authorization = `Bearer ${JSON.parse(token)}`;
+            config.headers.Authorization = `Bearer ${token}`;
         }
         return config;
     },

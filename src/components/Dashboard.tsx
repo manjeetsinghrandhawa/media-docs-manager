@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { RootState, AppDispatch } from '../store';
+import { AppDispatch } from '../store';
 import { setToken } from '../slices/authSlice';
 import FileUpload from './FileUpload';
 import FileList from './FileList';
 
 const Dashboard: React.FC = () => {
-  const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
@@ -26,37 +25,40 @@ const Dashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-richblack-800 p-3 sm:p-6">
+    <div className="min-h-screen p-3 sm:p-6">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 sm:mb-8">
-          <h1 className="text-2xl sm:text-3xl font-bold text-white">File Manager Dashboard</h1>
+        <div className="surface-card mb-6 flex flex-col gap-4 p-5 sm:mb-8 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-200">Control Center</p>
+            <h1 className="mt-1 text-2xl font-bold text-white sm:text-3xl">File Manager Dashboard</h1>
+          </div>
           <button
             onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-300 text-sm sm:text-base"
+            className="rounded-xl border border-rose-300/40 bg-rose-500/15 px-4 py-2 text-sm font-semibold text-rose-100 transition hover:bg-rose-500/25"
           >
             Logout
           </button>
         </div>
         
         {/* Tab Navigation */}
-        <div className="bg-richblack-700 rounded-lg mb-4 sm:mb-6">
-          <div className="flex border-b border-gray-600">
+        <div className="surface-card mb-4 p-3 sm:mb-6">
+          <div className="flex flex-wrap gap-2">
             <button
               onClick={() => setActiveTab('files')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 font-medium transition duration-200 text-sm sm:text-base ${
+              className={`chip-tab flex-1 text-sm sm:flex-none sm:text-base ${
                 activeTab === 'files'
-                  ? 'text-blue-400 border-b-2 border-blue-400'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'active'
+                  : 'hover:text-white'
               }`}
             >
               My Files
             </button>
             <button
               onClick={() => setActiveTab('upload')}
-              className={`flex-1 sm:flex-none px-4 sm:px-6 py-3 sm:py-4 font-medium transition duration-200 text-sm sm:text-base ${
+              className={`chip-tab flex-1 text-sm sm:flex-none sm:text-base ${
                 activeTab === 'upload'
-                  ? 'text-blue-400 border-b-2 border-blue-400'
-                  : 'text-gray-300 hover:text-white'
+                  ? 'active'
+                  : 'hover:text-white'
               }`}
             >
               Upload Files
@@ -65,10 +67,10 @@ const Dashboard: React.FC = () => {
         </div>
         
         {/* Tab Content */}
-        <div className="bg-richblack-700 rounded-lg p-4 sm:p-6">
+        <div className="surface-card p-4 sm:p-6">
           {activeTab === 'upload' ? (
             <div>
-              <h2 className="text-lg sm:text-xl font-semibold text-white mb-4 sm:mb-6">Upload New Files</h2>
+              <h2 className="mb-4 text-lg font-semibold text-white sm:mb-6 sm:text-xl">Upload New Files</h2>
               <FileUpload onUploadSuccess={handleUploadSuccess} />
             </div>
           ) : (
